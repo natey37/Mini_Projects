@@ -1,16 +1,16 @@
 import './App.css';
-import { Router, Routes, Route } from 'react-router'
 import GameOfLife from './pages/GameOfLife'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
     return (
         <div>
             <h1>Mini Projects</h1>
-            <Router>
+            {/* <Router> */}
                 <Routes>
-                    <Route exact path='/game_of_life' component={GameOfLife} />
+                    <Route exact path='/game_of_life' element={<GameOfLife></GameOfLife>} />
                 </Routes>
-            </Router>
+            {/* </Router> */}
         </div>
     );
 }
