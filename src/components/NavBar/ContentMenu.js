@@ -38,8 +38,6 @@ export default function ContentMenu() {
             >
                 <Link to='/'><MenuItem onClick={handleClose}>Home</MenuItem></Link>
                 <Link to='/game_of_life'><MenuItem onClick={handleClose}>Game of Life</MenuItem></Link>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
         </div>
     );
