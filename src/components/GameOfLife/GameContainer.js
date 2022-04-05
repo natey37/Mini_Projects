@@ -23,21 +23,21 @@ export default function GameContainer() {
                 name='width'
                 id='width'
                 value={gridDimensions.width}
-                onChange={(e) => setGridDimensions(prev => ({...prev, width: e.target.value }))}
+                onChange={(e) => setGridDimensions(prev => ({ ...prev, width: e.target.value }))}
             >
                 {mapSelectOptions()}
             </select>
             <label>Height</label>
-            <select 
-                name='height' 
-                id='height' 
+            <select
+                name='height'
+                id='height'
                 value={gridDimensions.height}
-                onChange={(e) => setGridDimensions(prev => ({...prev, height: e.target.value }))}
+                onChange={(e) => setGridDimensions(prev => ({ ...prev, height: e.target.value }))}
             >
                 {mapSelectOptions()}
             </select>
             <button
-                onClick={() => {}}
+                onClick={() => { }}
             >
                 Create Game Board!
             </button>
