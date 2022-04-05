@@ -1,4 +1,10 @@
+import GameContainer from "../components/GameOfLife/GameContainer";
+
 export default function GameOfLife() {
 
-    return (<div>This is the game of life</div>)
+    return (
+        <div>
+            <GameContainer></GameContainer>
+        </div>
+    )
 }
