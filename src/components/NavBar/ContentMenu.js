@@ -12,8 +12,28 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiPaper-root": {
             backgroundColor: theme.palette.secondary.light
         }
+    },
+    menuLink: {
+        textDecoration: 'none',
+    },
+    menuOption: {
+        color: theme.palette.info.dark,
+        '&:hover': {
+            color: theme.palette.primary.main,
+        }
     }
 }))
+
+const menuOptions = [
+    {
+        path: '/',
+        pathString: 'Home'
+    },
+    {
+        path: '/game_of_life',
+        pathString: 'Game of Life'
+    }
+]
 
 export default function ContentMenu() {
     const classes = useStyles();
@@ -26,8 +46,25 @@ export default function ContentMenu() {
         setAnchorEl(null);
     };
 
+    const MenuLink = ({path, pathString}) => {
+        return (
+            <>
+                <Link className={classes.menuLink} to={path}>
+                    <MenuItem className={classes.menuOption} onClick={handleClose}>{pathString}</MenuItem>
+                </Link>
+            </>
+        )
+    }
 
-
+    const displayMenuLinks = menuOptions.map((option) => {
+        return ( 
+            <MenuLink
+                key={option.path}
+                path={option.path}
+                pathString={option.pathString}
+            />
+        )
+    })
     return (
         <div>
             <Button
@@ -48,9 +85,19 @@ export default function ContentMenu() {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-                className={classes.paper}            >
-                <Link to='/'><MenuItem onClick={handleClose}>Home</MenuItem></Link>
-                <Link to='/game_of_life'><MenuItem onClick={handleClose}>Game of Life</MenuItem></Link>
+                className={classes.paper}
+            >
+                {menuOptions.map((option) => {
+                    return (
+                        <div>
+                            <MenuLink
+                                key={option.path}
+                                path={option.path}
+                                pathString={option.pathString}
+                            />
+                        </div>
+                    )
+                })}
             </Menu>
         </div>
     );
