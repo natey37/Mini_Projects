@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom'
-// import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function ContentMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -23,9 +23,10 @@ export default function ContentMenu() {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                sx={{ color: 'black' }}
             >
-                Dashboard
-      </Button>
+                <MenuIcon />
+            </Button>
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -35,6 +36,7 @@ export default function ContentMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
+                <Link to='/'><MenuItem onClick={handleClose}>Home</MenuItem></Link>
                 <Link to='/game_of_life'><MenuItem onClick={handleClose}>Game of Life</MenuItem></Link>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>

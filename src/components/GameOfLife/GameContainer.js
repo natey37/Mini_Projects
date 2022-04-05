@@ -35,7 +35,7 @@ export default function GameContainer() {
                     </select>
                     <label>Height</label>
                     <select
-                        disabled='true'
+                        disabled={true}
                         name='height'
                         id='height'
                         value={gridDimensions.height}
