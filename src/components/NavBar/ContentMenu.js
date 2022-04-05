@@ -5,8 +5,18 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu';
 /** @jsxImportSource @emotion/react */
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        "& .MuiPaper-root": {
+            backgroundColor: theme.palette.secondary.light
+        }
+    }
+}))
 
 export default function ContentMenu() {
+    const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -15,6 +25,8 @@ export default function ContentMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+
 
     return (
         <div>
@@ -36,7 +48,7 @@ export default function ContentMenu() {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-            >
+                className={classes.paper}            >
                 <Link to='/'><MenuItem onClick={handleClose}>Home</MenuItem></Link>
                 <Link to='/game_of_life'><MenuItem onClick={handleClose}>Game of Life</MenuItem></Link>
             </Menu>
