@@ -3,7 +3,7 @@ import ContentMenu from './ContentMenu'
 
 export default function Navbar() {
     return (
-        <div css={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <div css={theme => ({ display: 'flex', flexDirection: 'row', alignItems: 'center'})}>
             <h1>Mini Projects</h1>
             <ContentMenu />
         </div>

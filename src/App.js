@@ -3,9 +3,18 @@ import GameOfLife from './pages/GameOfLife'
 import Home from './pages/Home'
 import Navbar from './components/NavBar/Navbar'
 import { Routes, Route, Link } from 'react-router-dom'
+/** @jsxImportSource @emotion/react */
+import { ThemeProvider } from '@emotion/react'
+
+const theme = {
+    colors: {
+        primary: 'hotpink'
+    }
+}
 
 function App() {
     return (
+        // <ThemeProvider theme={theme}>
         <div>
             <Navbar />
             {/* <h1>Mini Projects</h1> */}
@@ -17,6 +26,7 @@ function App() {
             </Routes>
             {/* </Router> */}
         </div>
+        // </ThemeProvider>
     );
 }
 
