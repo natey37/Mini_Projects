@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { css, jsx } from '@emotion/react'
+import GameBoard from './GameBoard'
 
-const selectOptionsArray = Array.from(new Array(50).fill().map((x, index) => index))
+const selectOptionsArray = Array.from(new Array(5).fill().map((x, index) => (index + 1) * 10))
 
 export default function GameContainer() {
-
+    
+    const [createBoard, setCreateBoard] = useState(false);
     const [gridDimensions, setGridDimensions] = useState({
         width: 10,
         height: 10
@@ -12,35 +14,49 @@ export default function GameContainer() {
 
     const mapSelectOptions = () => {
         return selectOptionsArray.map((option) =>
-            <option key={option} >{option + 1}</option>
+            <option key={option} >{option}</option>
         )
     }
     return (
         <div>
             <h1>Game Of Life</h1>
-            <label>Width</label>
-            <select
-                name='width'
-                id='width'
-                value={gridDimensions.width}
-                onChange={(e) => setGridDimensions(prev => ({ ...prev, width: e.target.value }))}
-            >
-                {mapSelectOptions()}
-            </select>
-            <label>Height</label>
-            <select
-                name='height'
-                id='height'
-                value={gridDimensions.height}
-                onChange={(e) => setGridDimensions(prev => ({ ...prev, height: e.target.value }))}
-            >
-                {mapSelectOptions()}
-            </select>
-            <button
-                onClick={() => { }}
-            >
-                Create Game Board!
-            </button>
-        </div>
+            {!createBoard && (
+                <>
+                    <label>Width</label>
+                    <select
+                        name='width'
+                        id='width'
+                        value={gridDimensions.width}
+                        onChange={(e) => {
+                            setGridDimensions(prev => ({ ...prev, width: parseInt(e.target.value) }))
+                            setGridDimensions(prev => ({ ...prev, height: parseInt(e.target.value) }))
+                        }}
+                    >
+                        {mapSelectOptions()}
+                    </select>
+                    <label>Height</label>
+                    <select
+                        disabled='true'
+                        name='height'
+                        id='height'
+                        value={gridDimensions.height}
+                    >
+                        {mapSelectOptions()}
+                    </select>
+                    <button
+                        onClick={() => setCreateBoard(true)}
+                    >
+                        Create Game Board!
+                    </button>
+                </>
+            )}
+            {createBoard && (
+                <GameBoard
+                    width={gridDimensions.width}
+                    height={gridDimensions.height}
+                    setCreateBoard={setCreateBoard}
+                />
+            )}
+        </div >
     )
 }
