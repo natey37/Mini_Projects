@@ -4,6 +4,7 @@ export default function GameOfLife() {
 
     return (
         <div>
+            <h1>Game Of Life</h1>
             <GameContainer></GameContainer>
         </div>
     )

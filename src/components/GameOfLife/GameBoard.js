@@ -1,12 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react'
 import produce from "immer";
 
-const numRows = 20;
-const numCols = 20;
 const operations = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
 export default function GameContainer({ width, height, setCreateBoard }) {
-    console.log(width, height)
+
     const [gridDimensions] = useState({
         width: width,
         height: height

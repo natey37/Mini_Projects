@@ -5,7 +5,7 @@ import GameBoard from './GameBoard'
 const selectOptionsArray = Array.from(new Array(5).fill().map((x, index) => (index + 1) * 10))
 
 export default function GameContainer() {
-    
+
     const [createBoard, setCreateBoard] = useState(false);
     const [gridDimensions, setGridDimensions] = useState({
         width: 10,
@@ -19,7 +19,6 @@ export default function GameContainer() {
     }
     return (
         <div>
-            <h1>Game Of Life</h1>
             {!createBoard && (
                 <>
                     <label>Width</label>
