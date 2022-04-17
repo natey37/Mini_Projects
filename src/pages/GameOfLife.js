@@ -1,24 +1,29 @@
 import GameContainer from "../components/GameOfLife/GameContainer";
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
-export default function GameOfLife() {
-    const [hideRules, setHideRules] = useState(false)
+import { makeStyles } from "@material-ui/core/styles";
 
-    const container = {
+const useStyles = makeStyles((theme) => ({
+    container: {
         position: 'relative',
         height: '100%',
         width: '100%'
-    }
-    const flexContainerColumn = {
+    },
+    flexContainerColumn: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
+        [theme.breakpoints.down('md')]: {
+            // backgroundColor: 'red',
+            width: '100%',
+            marginLeft: '0%',
+        },
         // minWidth: 600
-    }
-    const info = {
+    },
+    info: {
         // position: 'absolute',
         // left: 100,
         // top: 100,
@@ -26,49 +31,59 @@ export default function GameOfLife() {
         padding: 10,
         height: 500,
         width: '50%',
-        overflow: 'scroll'
-    }
+        overflow: 'scroll',
+        [theme.breakpoints.down('md')]: {
+            width: '90%',
+            marginLeft: '0%',
+        },
+    },
 
-    const li = {
+    li: {
         fontStyle: 'italic'
-    }
+    },
 
-    const h3 = {
+    h3: {
         textDecoration: 'underline'
     }
+}))
+
+export default function GameOfLife() {
+    const classes = useStyles()
+    const [hideRules, setHideRules] = useState(false)
+
     return (
-        <div css={flexContainerColumn}>
+        <div className={classes.flexContainerColumn}>
             <h1>Game Of Life</h1>
             <GameContainer setHideRules={setHideRules}></GameContainer>
             {!hideRules &&
                 <>
-                    <div css={info}>
-                        <h3 css={h3}><a href='https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'>Rules</a></h3>
+                    <div className={classes.info}>
+                        <h3 className={classes.h3}><a href='https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life'>Rules</a></h3>
                         <p>The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, live or dead (or populated and unpopulated, respectively). Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent.</p>
                         <p>At each step in time, the following transitions occur:</p>
                         <ol>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
                             </li>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any live cell with two or three live neighbours lives on to the next generation.
                             </li>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any live cell with more than three live neighbours dies, as if by overpopulation.
                             </li>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
                             </li>
                         </ol>
                         <p>These rules, which compare the behavior of the automaton to real life, can be condensed into the following:</p>
                         <ol>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any live cell with two or three live neighbours survives.
                             </li>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 Any dead cell with three live neighbours becomes a live cell.
                             </li>
-                            <li css={li}>
+                            <li className={classes.li}>
                                 All other live cells die in the next generation. Similarly, all other dead cells stay dead.
                             </li>
                         </ol>

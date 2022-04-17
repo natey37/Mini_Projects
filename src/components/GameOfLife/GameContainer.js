@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { css, jsx } from '@emotion/react'
 import GameBoard from './GameBoard'
 import { makeStyles } from "@material-ui/core/styles";
+import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -62,13 +63,14 @@ const areaMap = {
 
 export default function GameContainer({ setHideRules }) {
     const classes = useStyles()
+    const isMobile = useCheckMobileScreen()
+
     const [createBoard, setCreateBoard] = useState(false);
     const [gridDimensions, setGridDimensions] = useState({
-        width: 10,
-        height: 10
+        width: isMobile ? 20 : 10,
+        height: isMobile ? 20 : 10
     });
-    const [gridArea, setGridArea] = useState(100)
-
+    const [gridArea, setGridArea] = useState(isMobile ? 400 : 100)
     const handleGridAreaSelect = (e) => {
         console.log(e.target.value)
         setGridDimensions({
@@ -90,6 +92,7 @@ export default function GameContainer({ setHideRules }) {
                 <>
                     <label>Area: </label>
                     <select
+                        disabled={isMobile}
                         className={classes.areaInput}
                         name='area'
                         id='area'
