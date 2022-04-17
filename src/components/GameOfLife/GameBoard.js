@@ -3,6 +3,21 @@ import produce from "immer";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+    disabledButton: {
+        marginRight: 5,
+        display: 'inline-block',
+        padding: '10px 15px',
+        fontSize: '16px',
+        cursor: 'pointer',
+        textAlign: 'center',
+        textDecoration: 'none',
+        outline: 'none',
+        color: 'black',
+        backgroundColor: theme.palette.error.main,
+        border: 'none',
+        borderRadius: '15px',
+        boxShadow: `0 5px ${theme.palette.secondary.light}`,
+    },
     button: {
         marginRight: 5,
         display: 'inline-block',
@@ -31,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 10,
         padding: '10px 15px',
         fontSize: '16px',
-
+        width: 50
     },
     areaRow: {
         display: 'flex',
@@ -46,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         padding: '5px',
         // marginRight: 5
     },
@@ -55,6 +71,21 @@ const useStyles = makeStyles((theme) => ({
         height: 200,
         width: 200,
         backgroundColor: 'red'
+    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '5px',
+        marginLeft: 50
+    },
+    grid: {
+        border: `solid 5px ${theme.palette.primary.main}`
+    },
+    smallGrid: {
+        // marginLeft: '20%',
+        border: `solid 5px ${theme.palette.primary.main}`
     }
 }))
 
@@ -66,6 +97,7 @@ export default function GameContainer({ width, height, setCreateBoard, setHideRu
         width: width,
         height: height
     })
+    const [color, setColor] = useState('#FFC0CB')
 
     const createGameBoard = () => {
         const rows = [];
@@ -141,21 +173,21 @@ export default function GameContainer({ width, height, setCreateBoard, setHideRu
                     {!running ? 'Start' : 'Stop'}
                 </button>
                 <button
-                    className={classes.button}
+                    className={running ? classes.disabledButton : classes.button}
                     disabled={running}
                     onClick={() => setGrid(createGameBoard)}
                 >
                     Clear
                 </button>
                 <button
-                    className={classes.button}
+                    className={running ? classes.disabledButton : classes.button}
                     disabled={running}
                     onClick={() => handleRandom()}
                 >
                     Random
                 </button>
                 <button
-                    className={classes.button}
+                    className={running ? classes.disabledButton : classes.button}
                     disabled={running}
                     onClick={() => {
                         setCreateBoard(false)
@@ -176,13 +208,19 @@ export default function GameContainer({ width, height, setCreateBoard, setHideRu
                     />
                     <div className={classes.label}>m/s</div>
                 </div>
+                <div className={classes.flexColumn}>
+                    <label className={classes.label}>Color</label>
+                    <input type="color" onChange={(e) => setColor(e.target.value)} value={color}></input>
+                </div>
             </div>
 
 
             <div
+                // className={width === 10 ? classes.smallGrid : classes.grid}
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: `repeat(${gridDimensions.width}, 20px)`
+                    gridTemplateColumns: `repeat(${gridDimensions.width}, 20px)`,
+                    border: `solid 5px ${color}`
                 }}
             >
                 {grid.map((rows, i) => {
@@ -199,7 +237,7 @@ export default function GameContainer({ width, height, setCreateBoard, setHideRu
                                 style={{
                                     width: 20,
                                     height: 20,
-                                    backgroundColor: grid[i][k] ? 'pink' : undefined,
+                                    backgroundColor: grid[i][k] ? color : undefined,
                                     border: 'solid 1px black'
                                 }}
                             >

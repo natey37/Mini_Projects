@@ -15,7 +15,8 @@ export default function GameOfLife() {
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '25%',
-        width: '50%'
+        width: '50%',
+        // minWidth: 600
     }
     const info = {
         // position: 'absolute',
