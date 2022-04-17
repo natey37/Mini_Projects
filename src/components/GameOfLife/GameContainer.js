@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/react'
 import GameBoard from './GameBoard'
 import { makeStyles } from "@material-ui/core/styles";
 import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
+import { selectOptionsArray, areaMap } from '../../constants/constants'
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -35,31 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
     }
 }))
-
-const selectOptionsArray = Array.from(new Array(5).fill().map((x, index) => ((index + 1) * 10) * ((index + 1) * 10)))
-
-const areaMap = {
-    100: {
-        width: 10,
-        height: 10
-    },
-    400: {
-        width: 20,
-        height: 20
-    },
-    900: {
-        width: 30,
-        height: 30
-    },
-    1600: {
-        width: 40,
-        height: 40
-    },
-    2500: {
-        width: 50,
-        height: 50
-    }
-}
 
 export default function GameContainer({ setHideRules }) {
     const classes = useStyles()

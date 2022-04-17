@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react'
 import produce from "immer";
 import { makeStyles } from "@material-ui/core/styles";
+import { operations } from '../../constants/constants'
 
 const useStyles = makeStyles((theme) => ({
     disabledButton: {
@@ -88,8 +89,6 @@ const useStyles = makeStyles((theme) => ({
         border: `solid 5px ${theme.palette.primary.main}`
     }
 }))
-
-const operations = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
 export default function GameContainer({ width, height, setCreateBoard, setHideRules }) {
     const classes = useStyles()
