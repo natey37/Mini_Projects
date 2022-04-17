@@ -1,10 +1,67 @@
 import React, { useState, useCallback, useRef } from 'react'
 import produce from "immer";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        marginRight: 5,
+        display: 'inline-block',
+        padding: '10px 15px',
+        fontSize: '16px',
+        cursor: 'pointer',
+        textAlign: 'center',
+        textDecoration: 'none',
+        outline: 'none',
+        color: 'black',
+        backgroundColor: theme.palette.primary.main,
+        border: 'none',
+        borderRadius: '15px',
+        boxShadow: `0 5px ${theme.palette.secondary.light}`,
+        '&:hover': {
+            backgroundColor: theme.palette.primary.light
+        },
+        '&:active': {
+            backgroundColor: theme.palette.success.main,
+            boxShadow: '0 5px #666',
+            transform: 'translateY(4px)'
+        },
+    },
+    areaInput: {
+        border: `solid 2px ${theme.palette.info.main}`,
+        marginRight: 10,
+        padding: '10px 15px',
+        fontSize: '16px',
+
+    },
+    areaRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    label: {
+        whiteSpace: 'no-wrap',
+        fontSize: 20
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: '5px',
+        // marginRight: 5
+    },
+    info: {
+        postion: 'absolute',
+        left: -100,
+        height: 200,
+        width: 200,
+        backgroundColor: 'red'
+    }
+}))
 
 const operations = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
-export default function GameContainer({ width, height, setCreateBoard }) {
-
+export default function GameContainer({ width, height, setCreateBoard, setHideRules }) {
+    const classes = useStyles()
     const [gridDimensions] = useState({
         width: width,
         height: height
@@ -70,8 +127,9 @@ export default function GameContainer({ width, height, setCreateBoard }) {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div className={classes.flexRow}>
                 <button
+                    className={classes.button}
                     onClick={() => {
                         setRunning(prev => !prev)
                         if (!running) {
@@ -83,30 +141,41 @@ export default function GameContainer({ width, height, setCreateBoard }) {
                     {!running ? 'Start' : 'Stop'}
                 </button>
                 <button
+                    className={classes.button}
                     disabled={running}
                     onClick={() => setGrid(createGameBoard)}
                 >
                     Clear
                 </button>
                 <button
+                    className={classes.button}
                     disabled={running}
                     onClick={() => handleRandom()}
                 >
                     Random
                 </button>
-                Set Interval
-                <input
-                    disabled={running}
-                    value={interval}
-                    onChange={(e) => setInterval(parseInt(e.target.value) || '')}
-                />
-                m/s
                 <button
+                    className={classes.button}
                     disabled={running}
-                    onClick={() => setCreateBoard(false)}
+                    onClick={() => {
+                        setCreateBoard(false)
+                        setHideRules(false)
+                    }}
                 >
-                    Create New Game Board
-                </button>
+                    New Board
+            </button>
+            </div>
+            <div className={classes.flexRow}>
+                <div className={classes.areaRow}>
+                    <div className={classes.label}>Set Interval:&nbsp;</div>
+                    <input
+                        className={classes.areaInput}
+                        disabled={running}
+                        value={interval}
+                        onChange={(e) => setInterval(parseInt(e.target.value) || '')}
+                    />
+                    <div className={classes.label}>m/s</div>
+                </div>
             </div>
 
 

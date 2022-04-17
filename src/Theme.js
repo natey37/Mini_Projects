@@ -16,7 +16,7 @@ export const theme = createTheme({
         info: {
             main: '#888da7'
         },
-        sucess: {
+        success: {
             main: '#303633'
         }
     },
