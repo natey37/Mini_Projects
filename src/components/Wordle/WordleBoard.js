@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
 import WordleKeyboard from './WordleKeyboard'
+import WinningModal from './WinningModal'
 import produce from "immer";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WORD = 'hello'
 
-export default function WordleBoard() {
+export default function WordleBoard({color}) {
     const classes = useStyles()
     const [wordArray, setWordArray] = useState()
     useEffect(() => {
@@ -57,7 +58,6 @@ export default function WordleBoard() {
         width: 5,
         height: 6
     })
-    const [color, setColor] = useState('#FFC0CB')
 
     const createGameBoard = () => {
         const rows = [];
@@ -71,6 +71,10 @@ export default function WordleBoard() {
     const [currentRow, setCurrentRow] = useState(0)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [colorMap, setColorMap] = useState()
+    const [winner, setWinner] = useState(false)
+    const [open, setOpen] = useState(false)
+
+    const text = winner ? 'You win! Big Winner!' : "You lose! Big Loser!"
 
     const TopRowKeys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const MidRowKeys = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -116,18 +120,30 @@ export default function WordleBoard() {
     }
 
     const handleEnter = () => {
+        if(currentIndex !== 5) return
+        if (open) return
         const word = createWord()
         //check to see if word is a valid word
         checkWord(word)
         if (WORD === word) {
             //winner
+            setWinner(true)
+            setOpen(true)
         } else {
-            setCurrentRow(prev => prev + 1)
-            setCurrentIndex(0)
+            // console.log(currentRow)
+            if (currentRow === 5) {
+                setWinner(false)
+                setOpen(true)
+            } else {
+                setCurrentRow(prev => prev + 1)
+                setCurrentIndex(0)
+            }
         }
     }
 
     const handleBack = () => {
+        if(winner) return
+        if(currentRow === 5 && currentIndex === 5) return 
         if (currentIndex === 0) return
         const newGrid = produce(grid, gridCopy => {
             gridCopy[currentRow][currentIndex - 1] = 0
@@ -138,6 +154,7 @@ export default function WordleBoard() {
     console.log('currentRow', currentRow)
     console.log('currentIndex', currentIndex)
     console.log(grid)
+    console.log(open)
     return (
         <>
             <div
@@ -182,7 +199,9 @@ export default function WordleBoard() {
                     <span className={classes.span}>Back</span>
                 </div>
             </div>
-
+            {open &&
+                <WinningModal close={setOpen} text={text} />
+            }
         </>
     )
 
