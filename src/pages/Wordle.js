@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
         // minWidth: 600
     },
     flexContainerRow: {

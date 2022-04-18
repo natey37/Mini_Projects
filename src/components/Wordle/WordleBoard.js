@@ -3,6 +3,8 @@ import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
 import WordleKeyboard from './WordleKeyboard'
 import WinningModal from './WinningModal'
 import produce from "immer";
+import ReactCardFlip from 'react-card-flip';
+
 
 const useStyles = makeStyles((theme) => ({
     grid: {
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WORD = 'hello'
 
-export default function WordleBoard({color}) {
+export default function WordleBoard({ color }) {
     const classes = useStyles()
     const [wordArray, setWordArray] = useState()
     useEffect(() => {
@@ -73,7 +75,14 @@ export default function WordleBoard({color}) {
     const [colorMap, setColorMap] = useState()
     const [winner, setWinner] = useState(false)
     const [open, setOpen] = useState(false)
-
+    const [isFlipped, setIsFlipped] = useState({
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+    })
     const text = winner ? 'You win! Big Winner!' : "You lose! Big Loser!"
 
     const TopRowKeys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
@@ -120,30 +129,35 @@ export default function WordleBoard({color}) {
     }
 
     const handleEnter = () => {
-        if(currentIndex !== 5) return
+        if (currentIndex !== 5) return
         if (open) return
         const word = createWord()
         //check to see if word is a valid word
         checkWord(word)
         if (WORD === word) {
             //winner
-            setWinner(true)
-            setOpen(true)
+            setIsFlipped(prev => ({ ...prev, [currentRow]: true }))
+            setTimeout(() => {
+                setWinner(true)
+                setOpen(true)
+            }, 1000)
         } else {
             // console.log(currentRow)
             if (currentRow === 5) {
                 setWinner(false)
                 setOpen(true)
             } else {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: true }))
                 setCurrentRow(prev => prev + 1)
                 setCurrentIndex(0)
             }
+            // setIsFlipped(false)
         }
     }
 
     const handleBack = () => {
-        if(winner) return
-        if(currentRow === 5 && currentIndex === 5) return 
+        if (winner) return
+        if (currentRow === 5 && currentIndex === 5) return
         if (currentIndex === 0) return
         const newGrid = produce(grid, gridCopy => {
             gridCopy[currentRow][currentIndex - 1] = 0
@@ -168,16 +182,29 @@ export default function WordleBoard({color}) {
                 {grid.map((rows, i) => {
                     return rows.map((col, k) => {
                         return (
-                            <div
-                                key={`${i}-${k}`}
-                                className={classes.grid}
-                                style={{
-                                    backgroundColor: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : 'black',
-                                    border: `solid 1px ${color}`
-                                }}
-                            >
-                                <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
-                            </div>
+                            <ReactCardFlip isFlipped={isFlipped[i]}>
+                                <div
+                                    key={`${i}-${k}`}
+                                    className={classes.grid}
+                                    style={{
+                                        backgroundColor: 'black',
+                                        border: `solid 1px ${color}`
+                                    }}
+                                >
+                                    <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
+                                </div>
+
+                                <div
+                                    key={`${i}-${k}`}
+                                    className={classes.grid}
+                                    style={{
+                                        backgroundColor: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : 'black',
+                                        border: `solid 1px ${color}`
+                                    }}
+                                >
+                                    <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
+                                </div>
+                            </ReactCardFlip>
                         )
                     })
                 })}
