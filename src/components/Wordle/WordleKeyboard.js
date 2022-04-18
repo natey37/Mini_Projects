@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
+/** @jsxImportSource @emotion/react */
 
 const useStyles = makeStyles((theme) => ({
     flexRow: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         height: 30,
         // lineHeight: 30,
         width: 20,
-        backgroundColor: 'gray',
+        backgroundColor: '#818384',
         padding: 5,
         margin: 2.5,
         textAlign: 'center',
@@ -30,17 +31,18 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-export default function WordleKeyboard({ keys, handleClick }) {
+export default function WordleKeyboard({ keys, handleClick, keyboardColorMap }) {
     const classes = useStyles()
 
     return (
         <div className={classes.flexRow}>
             {keys.map((key, index) => {
                 return (
-                    <div 
-                        key={key} 
-                        className={classes.key} 
+                    <div
+                        key={key}
+                        className={classes.key}
                         onClick={() => handleClick(key)}
+                        css={{backgroundColor: keyboardColorMap && keyboardColorMap[key] ? keyboardColorMap[key] : '#818384'}}
                     >
                         <span className={classes.span}>{key}</span>
                     </div>

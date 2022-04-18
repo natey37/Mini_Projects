@@ -5,9 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        position: "absolute",
-        top: "70%",
-        left: "40%",
+        // position: "absolute",
+        // top: "70%",
+        // left: "50%",
+        // msTransform: "translate(-50%,-50%)",
         display: 'inline-block',
         padding: '10px 15px',
         fontSize: '16px',
@@ -60,6 +61,7 @@ export default function WinningModal({ close, text }) {
                 css={{
                     border: "solid 3px red",
                     height: "50%",
+                    minHeight: 300,
                     width: '50%',
                     borderRadius: 20,
                     backgroundColor: "#FDC0FF",
@@ -74,37 +76,55 @@ export default function WinningModal({ close, text }) {
             >
                 <div
                     css={{
-                        position: "relative",
-                        height: "50%",
-                        width: "80%",
+                        position: "absolute",
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%,-50%)",
-                        msTransform: "translate(-50%,-50%)",
-                        // backgroundColor: 'red',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        // backgroundColor: 'red'
                     }}
                 >
                     <div
-                        css={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%,-50%)",
-                            msTransform: "translate(-50%,-50%)",
-                            // height: "100%",
-                            // width: "80%",
-                            fontSize: 25,
-                            textAlign: "center",
-                            fontWeight: "bold",
-                        }}
+                    // css={{
+                    //     position: "relative",
+                    //     // height: "50%",
+                    //     // width: "80%",
+                    //     top: "50%",
+                    //     left: "50%",
+                    //     transform: "translate(-50%,-50%)",
+                    //     msTransform: "translate(-50%,-50%)",
+                    //     // backgroundColor: 'red',
+                    // }}
                     >
-                        {text}
-                    </div>
-                </div>
-                <button className={classes.button} onClick={() => close(false)}>Close</button>
+                        <div
+                            css={{
+                                // position: "absolute",
+                                // top: "50%",
+                                // left: "50%",
+                                // transform: "translate(-50%,-50%)",
+                                // msTransform: "translate(-50%,-50%)",
+                                // height: "100%",
+                                // width: "80%",
+                                // marginTop: ,
+                                padding: 40,
+                                // margin: '0 auto',
 
+                                fontSize: 25,
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                // marginBottom: 30
+                            }}
+                        >
+                            {text}
+                        </div>
+                    </div>
+                    <button className={classes.button} onClick={() => close(false)}>Close</button>
+                </div>
             </div>
-            
+
             {/* <Link
         to={"/style"}
         // onClick={() => {

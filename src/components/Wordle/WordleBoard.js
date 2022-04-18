@@ -73,15 +73,16 @@ export default function WordleBoard({ color }) {
     const [currentRow, setCurrentRow] = useState(0)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [colorMap, setColorMap] = useState()
+    const [keyboardColorMap, setKeyboardColorMap] = useState()
     const [winner, setWinner] = useState(false)
     const [open, setOpen] = useState(false)
     const [isFlipped, setIsFlipped] = useState({
-        0: false,
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
+        0: [false, false, false, false, false],
+        1: [false, false, false, false, false],
+        2: [false, false, false, false, false],
+        3: [false, false, false, false, false],
+        4: [false, false, false, false, false],
+        5: [false, false, false, false, false],
     })
     const text = winner ? 'You win! Big Winner!' : "You lose! Big Loser!"
 
@@ -99,22 +100,26 @@ export default function WordleBoard({ color }) {
         setCurrentIndex(prevIndex => prevIndex + 1)
     }
 
-    const calculateColor = (key, index) => {
-        if (wordArray.includes(key) && key === wordArray[index]) {
-            return 'green'
-        } else if (wordArray.includes(key)) {
-            return 'yellow'
+    const calculateColor = (key, index, wordMap) => {
+        console.log(wordMap)
+        if (wordArray.includes(key) && key === wordArray[index] && wordMap[key] > 0) {
+            wordMap[key]--
+            return '#538D4E'
+        } else if (wordArray.includes(key) && wordMap[key] > 0) {
+            wordMap[key]--
+            return '#B59F3B'
         } else {
-            return color
+            return '#3A3A3B'
         }
     }
 
-    const checkWord = (word) => {
+    const checkWord = (word, wordMap) => {
         return (
             word.split('').forEach((letter, index) => {
-                const color = calculateColor(grid[currentRow][index], index)
+                const color = calculateColor(grid[currentRow][index], index, wordMap)
                 const indexString = `${currentRow}-${index}`
                 setColorMap(prev => ({ ...prev, [indexString]: color }))
+                setKeyboardColorMap(prev => ({ ...prev, [letter]: color }))
             })
         )
     }
@@ -128,29 +133,67 @@ export default function WordleBoard({ color }) {
         return word
     }
 
+    const createWordMap = () => {
+        let map = {}
+        wordArray.forEach((letter) => {
+            map[letter] ? map[letter] += 1 : map[letter] = 1
+        })
+        return map
+    }
+
     const handleEnter = () => {
         if (currentIndex !== 5) return
         if (open) return
         const word = createWord()
+        const wordMap = createWordMap()
+        console.log(wordMap)
         //check to see if word is a valid word
-        checkWord(word)
+        checkWord(word, wordMap)
         if (WORD === word) {
             //winner
-            setIsFlipped(prev => ({ ...prev, [currentRow]: true }))
+            setIsFlipped(prev => ({ ...prev, [currentRow]: [true, false, false, false, false] }))
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, false, false, false] }))
+            }, 300)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, false, false] }))
+            }, 600)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, true, false] }))
+            }, 900)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, true, true] }))
+            }, 1200)
             setTimeout(() => {
                 setWinner(true)
                 setOpen(true)
-            }, 1000)
+            }, 1500)
         } else {
+
+            setIsFlipped(prev => ({ ...prev, [currentRow]: [true, false, false, false, false] }))
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, false, false, false] }))
+            }, 300)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, false, false] }))
+            }, 600)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, true, false] }))
+            }, 900)
+            setTimeout(() => {
+                setIsFlipped(prev => ({ ...prev, [currentRow]: [true, true, true, true, true] }))
+            }, 1200)
+            setTimeout(() => {
+                if (currentRow === 5) {
+                    setWinner(false)
+                    setOpen(true)
+                } else {
+                    setCurrentRow(prev => prev + 1)
+                    setCurrentIndex(0)
+                }
+            }, 1500)
             // console.log(currentRow)
-            if (currentRow === 5) {
-                setWinner(false)
-                setOpen(true)
-            } else {
-                setIsFlipped(prev => ({ ...prev, [currentRow]: true }))
-                setCurrentRow(prev => prev + 1)
-                setCurrentIndex(0)
-            }
+
             // setIsFlipped(false)
         }
     }
@@ -165,10 +208,10 @@ export default function WordleBoard({ color }) {
         setGrid(newGrid);
         setCurrentIndex(prevIndex => prevIndex - 1)
     }
-    console.log('currentRow', currentRow)
-    console.log('currentIndex', currentIndex)
-    console.log(grid)
-    console.log(open)
+    // console.log('currentRow', currentRow)
+    // console.log('currentIndex', currentIndex)
+    // console.log(grid)
+    // console.log(open)
     return (
         <>
             <div
@@ -176,19 +219,20 @@ export default function WordleBoard({ color }) {
                     display: 'grid',
                     gridTemplateColumns: `repeat(${gridDimensions.width}, 50px)`,
                     gridGap: 5,
-                    border: `solid 5px ${color}`
+                    // border: `solid 5px ${color}`
                 }}
             >
                 {grid.map((rows, i) => {
                     return rows.map((col, k) => {
                         return (
-                            <ReactCardFlip isFlipped={isFlipped[i]}>
+                            <ReactCardFlip isFlipped={isFlipped[i][k]} flipDirection="vertical">
                                 <div
                                     key={`${i}-${k}`}
                                     className={classes.grid}
                                     style={{
                                         backgroundColor: 'black',
-                                        border: `solid 1px ${color}`
+                                        // border: `solid 1px ${color}`
+                                        border: 'solid 1px #3A3A3B'
                                     }}
                                 >
                                     <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
@@ -199,7 +243,9 @@ export default function WordleBoard({ color }) {
                                     className={classes.grid}
                                     style={{
                                         backgroundColor: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : 'black',
-                                        border: `solid 1px ${color}`
+                                        // border: `solid 1px ${color}`
+                                        border: 'solid 1px #3A3A3B'
+
                                     }}
                                 >
                                     <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
@@ -210,8 +256,8 @@ export default function WordleBoard({ color }) {
                 })}
             </div>
             <br />
-            <WordleKeyboard keys={TopRowKeys} handleClick={handleKeyboardClick} />
-            <WordleKeyboard keys={MidRowKeys} handleClick={handleKeyboardClick} />
+            <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={TopRowKeys} handleClick={handleKeyboardClick} />
+            <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={MidRowKeys} handleClick={handleKeyboardClick} />
             <div className={classes.flexRow}>
                 <div
                     onClick={() => handleEnter()}
@@ -219,7 +265,7 @@ export default function WordleBoard({ color }) {
                 >
                     <span className={classes.span}>Enter</span>
                 </div>
-                <WordleKeyboard keys={BotRowKeys} handleClick={handleKeyboardClick} />
+                <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={BotRowKeys} handleClick={handleKeyboardClick} />
                 <div
                     onClick={() => handleBack()}
                     className={classes.key}>
