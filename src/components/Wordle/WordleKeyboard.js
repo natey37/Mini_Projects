@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 /** @jsxImportSource @emotion/react */
+import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
 
 const useStyles = makeStyles((theme) => ({
     flexRow: {
@@ -10,21 +11,23 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     key: {
-        height: 30,
+        height: 48,
         // lineHeight: 30,
-        width: 20,
+        width: 33,
         backgroundColor: '#818384',
         padding: 5,
-        margin: 2.5,
+        margin: 3.5,
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: 14,
         color: 'white',
         position: 'relative',
-        borderRadius: 5,
+        borderRadius: 4,
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
     },
     span: {
         position: 'absolute',
-        top: "45%",
+        top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
     }
@@ -33,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function WordleKeyboard({ keys, handleClick, keyboardColorMap }) {
     const classes = useStyles()
+    const isMobile = useCheckMobileScreen()
 
     return (
         <div className={classes.flexRow}>
@@ -42,7 +46,7 @@ export default function WordleKeyboard({ keys, handleClick, keyboardColorMap }) 
                         key={key}
                         className={classes.key}
                         onClick={() => handleClick(key)}
-                        css={{backgroundColor: keyboardColorMap && keyboardColorMap[key] ? keyboardColorMap[key] : '#818384'}}
+                        css={{ backgroundColor: keyboardColorMap && keyboardColorMap[key] ? keyboardColorMap[key] : '#818384', height: isMobile ? 45 : 48, width: isMobile ? 25 : 33, margin: isMobile ? 2.5 : 3.5}}
                     >
                         <span className={classes.span}>{key}</span>
                     </div>

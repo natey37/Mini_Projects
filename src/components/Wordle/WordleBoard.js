@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
+/** @jsxImportSource @emotion/react */
 import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
 import WordleKeyboard from './WordleKeyboard'
 import WinningModal from './WinningModal'
 import produce from "immer";
 import ReactCardFlip from 'react-card-flip';
+import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
 
 
 const useStyles = makeStyles((theme) => ({
     grid: {
-        width: 50,
-        height: 50,
+        width: 58,
+        height: 58,
         position: 'relative'
     },
     flexRow: {
@@ -19,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     key: {
-        height: 30,
-        // lineHeight: 30,
-        width: 40,
+        // height: 48,
+        // // lineHeight: 30,
+        // width: 55,
         backgroundColor: 'gray',
         padding: 5,
         margin: 2.5,
@@ -30,27 +32,33 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         position: 'relative',
         borderRadius: 5,
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
     },
     span: {
         position: 'absolute',
-        top: "45%",
+        top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
+        textTransform: 'uppercase'
     },
     boardSpan: {
         position: 'absolute',
-        top: "40%",
+        top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
         color: 'white',
-        fontSize: 30
+        fontSize: 30,
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
     }
 }))
 
-const WORD = 'hello'
+const WORD = 'clone'
 
 export default function WordleBoard({ color }) {
     const classes = useStyles()
+    const isMobile = useCheckMobileScreen()
     const [wordArray, setWordArray] = useState()
     useEffect(() => {
         setWordArray(WORD.split(''))
@@ -217,8 +225,11 @@ export default function WordleBoard({ color }) {
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: `repeat(${gridDimensions.width}, 50px)`,
-                    gridGap: 5,
+                    gridTemplateColumns: `repeat(${gridDimensions.width}, 58px)`,
+                    gridGap: '5px 10px',
+                    marginBottom: 30
+                    // boxSizing: 'border-box'
+                    // backgroundColor: 'red'
                     // border: `solid 5px ${color}`
                 }}
             >
@@ -230,9 +241,9 @@ export default function WordleBoard({ color }) {
                                     key={`${i}-${k}`}
                                     className={classes.grid}
                                     style={{
-                                        backgroundColor: 'black',
+                                        backgroundColor: '#121214',
                                         // border: `solid 1px ${color}`
-                                        border: 'solid 1px #3A3A3B'
+                                        border: 'solid 2px #3A3A3B'
                                     }}
                                 >
                                     <span className={classes.boardSpan}>{grid[i][k] !== 0 && grid[i][k]}</span>
@@ -242,9 +253,9 @@ export default function WordleBoard({ color }) {
                                     key={`${i}-${k}`}
                                     className={classes.grid}
                                     style={{
-                                        backgroundColor: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : 'black',
+                                        backgroundColor: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : '#121214',
                                         // border: `solid 1px ${color}`
-                                        border: 'solid 1px #3A3A3B'
+                                        border: `solid 2px ${colorMap && colorMap[`${i}-${k}`]}`
 
                                     }}
                                 >
@@ -255,24 +266,28 @@ export default function WordleBoard({ color }) {
                     })
                 })}
             </div>
-            <br />
+
             <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={TopRowKeys} handleClick={handleKeyboardClick} />
             <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={MidRowKeys} handleClick={handleKeyboardClick} />
             <div className={classes.flexRow}>
                 <div
                     onClick={() => handleEnter()}
                     className={classes.key}
+                    css={{ height: isMobile ? 45 : 48, width: isMobile ? 40 : 55}}
                 >
                     <span className={classes.span}>Enter</span>
                 </div>
                 <WordleKeyboard keyboardColorMap={keyboardColorMap} keys={BotRowKeys} handleClick={handleKeyboardClick} />
                 <div
                     onClick={() => handleBack()}
-                    className={classes.key}>
+                    className={classes.key}
+                    css={{ height: isMobile ? 45 : 48, width: isMobile ? 40 : 55 }}
+                >
                     <span className={classes.span}>Back</span>
                 </div>
             </div>
-            {open &&
+            {
+                open &&
                 <WinningModal close={setOpen} text={text} />
             }
         </>

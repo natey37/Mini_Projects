@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
-        backgroundColor: 'black'
+        // backgroundColor: 'black'
         // minWidth: 600
     },
     flexContainerRow: {
@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
             transform: 'translateY(4px)'
         },
     },
+
+    background: {
+        backgroundColor: '#121214',
+        height: '100vh'
+    },
 }))
 
 export default function Wordle() {
@@ -58,13 +63,15 @@ export default function Wordle() {
         }
     }, [open])
     return (
-        <div className={classes.flexContainerColumn}>
-            <h1 css={{ color: 'white' }}>Wordle</h1>
-            <div className={classes.flexContainerRow}>
-                <button className={classes.button} onClick={() => setOpen(prev => !prev)}>Reset</button>
-                <input disabled onChange={(e) => setColor(e.target.value)} value={color} type='color'></input>
-            </div>
-            {open && <WordleBoard color={color} />}
-        </div >
+        <div css={{backgroundColor: color}} className={classes.background}>
+            <div className={classes.flexContainerColumn}>
+                <h1 css={{ color: 'white' }}>Wordle</h1>
+                <div className={classes.flexContainerRow}>
+                    <button className={classes.button} onClick={() => setOpen(prev => !prev)}>Reset</button>
+                    <input onChange={(e) => setColor(e.target.value)} value={color} type='color'></input>
+                </div>
+                {open && <WordleBoard color={color} />}
+            </div >
+        </div>
     )
 }

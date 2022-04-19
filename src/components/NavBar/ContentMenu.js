@@ -32,6 +32,10 @@ const menuOptions = [
     {
         path: '/game_of_life',
         pathString: 'Game of Life'
+    },
+    {
+        path: '/wordle',
+        pathString: 'Wordle'
     }
 ]
 
