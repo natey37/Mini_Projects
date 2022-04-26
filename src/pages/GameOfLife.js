@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 10,
         padding: 10,
         height: 500,
-        width: '50%',
+        width: '100%',
         overflow: 'scroll',
         [theme.breakpoints.down('md')]: {
             width: '90%',

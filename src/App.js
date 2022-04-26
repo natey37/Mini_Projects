@@ -1,4 +1,5 @@
 import './App.css';
+import Wordle from './pages/Wordle'
 import GameOfLife from './pages/GameOfLife'
 import Home from './pages/Home'
 import Navbar from './components/NavBar/Navbar'
@@ -17,7 +18,9 @@ function App() {
                     <Navbar />
                     <Routes>
                         <Route exact path='/' element={<Home></Home>} />
-                        <Route exact path='/game_of_life' element={<GameOfLife></GameOfLife>} />
+                        <Route exact path='/game_of_life' element={<GameOfLife></GameOfLife>}
+                        />
+                        <Route exact path='/wordle' element={<Wordle></Wordle>} />
                     </Routes>
                 </div>
             </ThemeProvider>

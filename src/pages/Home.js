@@ -1,33 +1,33 @@
 /** @jsxImportSource @emotion/react */
 import GameOfLife from '../images/gameOfLife.png'
+import GameOfLife3 from '../images/gameOfLife3.png'
+
+import Wordle from '../images/wordle.png'
+
 import { Link } from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+    background: {
+        backgroundColor: theme.palette.secondary.light,
+    },
+
     flexContainerColumn: {
+        marginTop: -10,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
-        // minWidth: 600
-    },
-
-    container: {
-        height: '100%',
-        width: '75%',
-        marginLeft: '12.5%',
-        backgroundColor: theme.palette.secondary.light,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center'
     },
 
     card: {
         height: 300,
+        width: 'auto',
         border: `solid 3px ${theme.palette.primary.light}`,
-        marginRight: 20,
+        margin: 10,
+        marginBottom: -10
     },
 
     cardContainer: {
@@ -40,15 +40,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Card = ({ title, img }) => {
+const Card = ({ title, img, link }) => {
     const classes = useStyles()
     return (
         <div className={classes.cardContainer}>
-            <Link to={'/game_of_life'}>
+            <Link to={link}>
                 <img className={classes.card} src={img}></img>
             </Link>
-            <h3>Game of Life</h3>
-
+            <h3>{title}</h3>
         </div>
     )
 }
@@ -56,10 +55,11 @@ const Card = ({ title, img }) => {
 export default function Home() {
     const classes = useStyles()
     return (
-        <div>
-            <h1 className={classes.flexContainerColumn}>Welcome to Mini Games</h1>
-            <div className={classes.container}>
-                <Card title={'Game of Life'} img={GameOfLife}></Card>
+        <div className={classes.background}>
+            <div className={classes.flexContainerColumn}>
+                <h1>Welcome to Mini Games</h1>
+                <Card title={'Game of Life'} img={GameOfLife3} link={'/game_of_life'}></Card>
+                <Card title={'Wordle'} img={Wordle} link={'/wordle'}></Card>
             </div>
         </div>
     )

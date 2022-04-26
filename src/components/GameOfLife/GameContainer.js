@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameContainer({ setHideRules }) {
     const classes = useStyles()
+
     const isMobile = useCheckMobileScreen()
 
     const [createBoard, setCreateBoard] = useState(false);
