@@ -59,12 +59,14 @@ export default function WordleBoard({ color }) {
 
     const [wordArray, setWordArray] = useState()
     const [gridDimensions] = useState({ width: 5, height: 6 })
+    const [wordDictionary, setWordDictionary] = useState()
 
     useEffect(() => {
         fetch(dictionary)
             .then(r => r.text())
             .then(text => {
                 const words = text.split('\n')
+                setWordDictionary(words)
                 const word = words[Math.floor(Math.random() * words.length)];
                 setWordArray(word.split(''))
             });
@@ -136,15 +138,22 @@ export default function WordleBoard({ color }) {
         return map
     }
 
+    const isValidWord = (word) => {
+        return wordDictionary.includes(word)
+    }
+
     const handleEnter = () => {
         if (currentIndex !== 5) return
         if (open) return
+
         const word = createWord()
+        if (!isValidWord(word)) return
+
         const wordMap = createWordMap()
 
-        //check to see if word is a valid word
+        //check to see what positions letters are in, and update the colors for the board and the keyboard
         checkWord(word, wordMap)
-        
+
         if (wordArray.join('') === word) {
             //winner
             setIsFlipped(prev => ({ ...prev, [currentRow]: [true, false, false, false, false] }))
