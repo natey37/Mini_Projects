@@ -1,14 +1,14 @@
-Mini Projects 
+# Mini Projects 
 
-TO DO: 
+## TO DO: 
 
-Wordle Clone
-    -Correct miscolored keys on keyboard if there is a double letter
-    -Add winning animation
-    -Add final word pop up 
-    -Add an external API to fetch and valid words 
+### Wordle Clone:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Correct miscolored keys on keyboard if there is a double letter\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Add winning animation\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Add final word pop up\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Add an external API to fetch and valid words 
 
-Game of Life 
-    -Add the ability to choose multiple colors 
-    -Track the different colors through time 
-    -Display those populations with a bar or pie graph
+### Game of Life
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Add the ability to choose multiple colors\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Track the different colors through time\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Display those populations with a bar or pie graph
