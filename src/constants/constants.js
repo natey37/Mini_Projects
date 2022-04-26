@@ -37,3 +37,4 @@ export const isFlippedBoard = {
     4: [false, false, false, false, false],
     5: [false, false, false, false, false],
 }
+

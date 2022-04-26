@@ -7,6 +7,7 @@ import produce from "immer";
 import ReactCardFlip from 'react-card-flip';
 import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
 import { TopRowKeys, MidRowKeys, BotRowKeys, isFlippedBoard } from '../../constants/constants'
+import dictionary from '../../constants/dictionary.txt';
 
 const useStyles = makeStyles((theme) => ({
     grid: {
@@ -51,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const WORD = 'clone'
-
 export default function WordleBoard({ color }) {
 
     const classes = useStyles()
@@ -62,7 +61,13 @@ export default function WordleBoard({ color }) {
     const [gridDimensions] = useState({ width: 5, height: 6 })
 
     useEffect(() => {
-        setWordArray(WORD.split(''))
+        fetch(dictionary)
+            .then(r => r.text())
+            .then(text => {
+                const words = text.split('\n')
+                const word = words[Math.floor(Math.random() * words.length)];
+                setWordArray(word.split(''))
+            });
     }, [])
 
     const createGameBoard = () => {
@@ -139,8 +144,8 @@ export default function WordleBoard({ color }) {
 
         //check to see if word is a valid word
         checkWord(word, wordMap)
-
-        if (WORD === word) {
+        
+        if (wordArray.join('') === word) {
             //winner
             setIsFlipped(prev => ({ ...prev, [currentRow]: [true, false, false, false, false] }))
             setTimeout(() => {
@@ -195,6 +200,7 @@ export default function WordleBoard({ color }) {
         setGrid(newGrid);
         setCurrentIndex(prevIndex => prevIndex - 1)
     }
+    console.log(wordArray)
 
     return (
         <>
