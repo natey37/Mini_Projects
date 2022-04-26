@@ -1,4 +1,11 @@
 # Mini Projects 
+ 
+## TO RUN: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*git clone https://github.com/natey37/Mini_Projects.git \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*cd Mini_Projects\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*npm install\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*npm run start
 
 ## TO DO: 
 
