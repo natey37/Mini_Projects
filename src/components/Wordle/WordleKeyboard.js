@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 /** @jsxImportSource @emotion/react */
 import useCheckMobileScreen from '../../hooks/useCheckMobileScreen'
@@ -12,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
     key: {
         height: 48,
-        // lineHeight: 30,
         width: 33,
         backgroundColor: '#818384',
         padding: 5,

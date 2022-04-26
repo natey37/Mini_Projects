@@ -11,8 +11,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
-        // backgroundColor: 'black'
-        // minWidth: 600
     },
     flexContainerRow: {
         display: 'flex',
@@ -20,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     button: {
         display: 'inline-block',
         padding: '10px 15px',
@@ -45,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
             transform: 'translateY(4px)'
         },
     },
-
     background: {
         backgroundColor: '#121214',
         height: '100vh'
@@ -53,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Wordle() {
+
     const classes = useStyles()
     const [open, setOpen] = useState(true)
     const [color, setColor] = useState('#121214')
@@ -62,6 +59,7 @@ export default function Wordle() {
             setOpen(true)
         }
     }, [open])
+    
     return (
         <div css={{backgroundColor: color}} className={classes.background}>
             <div className={classes.flexContainerColumn}>

@@ -10,8 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
     background: {
         backgroundColor: theme.palette.secondary.light,
-        height: '100vh',
-        // marginTop: 10,
     },
 
     flexContainerColumn: {
@@ -22,19 +20,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         marginLeft: '25%',
         width: '50%',
-
-        // minWidth: 600
-    },
-
-    container: {
-        // height: '100%',
-        // width: '75%',
-        // // minWidth: 1000,
-        // marginLeft: '12.5%',
-        // backgroundColor: theme.palette.secondary.light,
-        // display: 'flex',
-        // flexDirection: 'row',
-        // justifyContent: 'center'
     },
 
     card: {
