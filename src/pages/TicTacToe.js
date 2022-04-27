@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { makeStyles } from "@material-ui/core/styles";
-import WordleBoard from '../components/Wordle/WordleBoard'
+import TicTacToeBoard from '../components/TicTacToe/TicTacToeBoard'
 import { useState, useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -43,32 +43,33 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     background: {
-        backgroundColor: '#121214',
+        backgroundColor: '#1A2A33',
         height: '100vh'
     },
 }))
 
-export default function Wordle() {
+export default function TicTacToe() {
 
     const classes = useStyles()
-    const [open, setOpen] = useState(true)
-    const [color, setColor] = useState('#121214')
+    // const [open, setOpen] = useState(true)
+    const [color, setColor] = useState('#1A2A33')
 
-    useEffect(() => {
-        if (!open) {
-            setOpen(true)
-        }
-    }, [open])
+    // useEffect(() => {
+    //     if (!open) {
+    //         setOpen(true)
+    //     }
+    // }, [open])
 
     return (
         <div css={{ backgroundColor: color }} className={classes.background}>
             <div className={classes.flexContainerColumn}>
-                <h1 css={{ color: 'white' }}>Wordle</h1>
-                <div className={classes.flexContainerRow}>
+                <h1 css={{ color: 'white' }}>TicTacToe</h1>
+                <TicTacToeBoard></TicTacToeBoard>
+                {/* <div className={classes.flexContainerRow}>
                     <button className={classes.button} onClick={() => setOpen(prev => !prev)}>Reset</button>
                     <input onChange={(e) => setColor(e.target.value)} value={color} type='color'></input>
-                </div>
-                {open && <WordleBoard color={color} />}
+                </div> */}
+                {/* {open && <WordleBoard color={color} />} */}
             </div >
         </div>
     )
