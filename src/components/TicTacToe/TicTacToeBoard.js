@@ -5,6 +5,7 @@ import refresh from '../../images/refreshicon.png'
 import produce from "immer";
 import { WinningCombinations, IndexToPositionMap } from '../../constants/constants'
 import WinningModal from './WinningModal'
+import RestartModal from './RestartModal'
 //orange - #F2B136
 //teal - #55C3BC
 //background - #1A2A33
@@ -61,16 +62,12 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 10
     },
     scoreButton: {
-        // backgroundColor: oColor,
-        // borderBottom: 'solid 4px #10212A',
         textTransform: 'uppercase',
         fontWeight: 'bold',
         color: '#203641',
         height: 70,
         width: 125,
-        // padding: '10px 35px',
         borderRadius: 20,
-        // height: 70
     },
     scoreText: {
         marginTop: 0
@@ -83,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function TicTacToeBoard({ token }) {
+export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
     const classes = useStyles()
     const [gridDimensions] = useState({ width: 3, height: 3 })
 
@@ -96,14 +93,15 @@ export default function TicTacToeBoard({ token }) {
     }
 
     const [grid, setGrid] = useState(() => createGameBoard())
-    const [player, setPlayer] = useState(false)
+    const [player, setPlayer] = useState(true)
     const playerColor = player === true ? '#31C3BD' : '#F2B136'
     const currentPlayer = player ? 'X' : 'O'
     const [colorMap, setColorMap] = useState()
     const [xPositions, setXPositions] = useState([])
     const [oPositions, setOPositions] = useState([])
     const [winner, setWinner] = useState()
-    const [open, setOpen] = useState()
+    const [openWinningModal, setOpenWinningModal] = useState()
+    const [openRestartModal, setOpenRestartModal] = useState()
 
     const [xScore, setXScore] = useState(0)
     const [oScore, setOScore] = useState(0)
@@ -118,7 +116,7 @@ export default function TicTacToeBoard({ token }) {
         });
         setGrid(newGrid)
 
-        currentPlayer === 'X' ?
+        player ?
             setXPositions(prev => [...prev, IndexToPositionMap[`${currentRow}-${currentColumn}`]])
             :
             setOPositions(prev => [...prev, IndexToPositionMap[`${currentRow}-${currentColumn}`]])
@@ -128,28 +126,32 @@ export default function TicTacToeBoard({ token }) {
     }
 
     useEffect(() => {
-        xPositions.length > 0 && setOpen(true)
+        if (xPositions.length >= 3 || oPositions.length >= 3) {
+            setTimeout(() => {
+                setOpenWinningModal(true)
+            }, 1000)
+        }
     }, [winner])
 
-    useEffect(() => {
+    const calculateWinner = (winner, setScore) => {
         if (checkWinner()) {
-            setWinner(currentPlayer)
-            currentPlayer === "X" ?
-                setXScore(prev => prev + 1)
-                :
-                setOScore(prev => prev + 1)
-            // const currentScore = scores[player]
-            // setScores(prev => ({ ...prev, player: currentScore + 1 }))
-            // setEndGameText(`${currentPlayer} Takes the round`)
+            setWinner(winner)
+            console.log('in check winner')
+            setScore(prev => prev + 1)
         } else {
-            setPlayer(prev => !prev)
+            //Prevent from switching players on initial render
+            if (xPositions.length > 0) {
+                setPlayer(prev => !prev)
+            }
+
+            //If length === 9, all spots on board are taken, game ends (tie)
+            if (xPositions.length + oPositions.length === 9) {
+                setWinner('tie')
+                setTScore(prev => prev + 1)
+            }
         }
-        if (xPositions.length + oPositions.length === 9) {
-            setWinner('tie')
-            setTScore(prev => prev + 1)
-        }
-    }, [xPositions, oPositions])
-    console.log(xPositions.length + oPositions.length)
+    }
+
     const checkWinner = () => {
         let winner = false
         for (const key in WinningCombinations) {
@@ -157,13 +159,23 @@ export default function TicTacToeBoard({ token }) {
             let count = 0
             // debugger
             winningCombo.forEach((index) => {
-                let currentPositions = currentPlayer === "X" ? xPositions : oPositions
+                let currentPositions = player ? xPositions : oPositions
                 if (currentPositions.includes(index)) count++
                 if (count === 3) return winner = true
             })
         }
         return winner
     }
+
+    useEffect(() => {
+        //Check for a winner, if not switch players
+        calculateWinner("X", setXScore)
+    }, [xPositions])
+
+    useEffect(() => {
+        calculateWinner("O", setOScore)
+    }, [oPositions])
+
 
     const handleNextGameClick = () => {
         setGrid(createGameBoard())
@@ -172,27 +184,27 @@ export default function TicTacToeBoard({ token }) {
     }
 
     const handleRefresh = () => {
-        setGrid(createGameBoard())
-        setXPositions([])
-        setOPositions([])
-        setXScore(0)
-        setTScore(0)
-        setOScore(0)
+        setOpenRestartModal(true)
     }
-    console.log(colorMap)
-    console.log(xPositions)
-    console.log(oPositions)
-    console.log(winner)
+
+    const handleRestart = () => {
+        setOpenBoard(prev => !prev)
+    }
+    // console.log(playerMark)
+    // console.log(player)
+    console.log(xPositions, oPositions)
+    console.log(grid)
+    console.log(player, winner)
     return (
         <>
             <div className={classes.flexRow}>
                 <p className={classes.headerX}>X<span css={{ color: oColor }}>O</span></p>
                 <div className={classes.turnButton}><span css={{ color: playerColor, fontSize: 20 }}>{currentPlayer} </span> turn</div>
-                <button 
+                <button
                     className={classes.refreshButton}
                     onClick={() => handleRefresh()}
                 >
-                    <img alt='Refresh icon' css={{ height: 20, width: 20 }} src={refresh}/>
+                    <img alt='Refresh icon' css={{ height: 20, width: 20 }} src={refresh} />
                 </button>
             </div>
             <div
@@ -233,20 +245,21 @@ export default function TicTacToeBoard({ token }) {
                 )}
             </div>
             <div className={classes.flexRow}>
-                <button css={{ backgroundColor: oColor }} className={classes.scoreButton}>
-                    <p className={classes.scoreText}>O (You)</p>
-                    <p className={classes.score}>{oScore}</p>
+                <button css={{ backgroundColor: playerMark ? xColor : oColor }} className={classes.scoreButton}>
+                    <p className={classes.scoreText}>{playerMark ? 'X' : '0'} (You)</p>
+                    <p className={classes.score}>{playerMark ? xScore : oScore}</p>
                 </button>
                 <button css={{ backgroundColor: '#A8BFC9' }} className={classes.scoreButton}>
                     <p className={classes.scoreText}>Ties</p>
                     <p className={classes.score}>{tScore}</p>
                 </button>
-                <button css={{ backgroundColor: xColor }} className={classes.scoreButton}>
-                    <p className={classes.scoreText}>X (CPU)</p>
-                    <p className={classes.score}>{xScore}</p>
+                <button css={{ backgroundColor: !playerMark ? xColor : oColor }} className={classes.scoreButton}>
+                    <p className={classes.scoreText}>{!playerMark ? 'X' : '0'} CPU</p>
+                    <p className={classes.score}>{!playerMark ? xScore : oScore}</p>
                 </button>
             </div>
-            {open && <WinningModal close={setOpen} player={winner} handleNextRound={handleNextGameClick} />}
+            {openWinningModal && <WinningModal close={setOpenWinningModal} player={winner} playerMark ={playerMark} handleNextRound={handleNextGameClick} />}
+            {openRestartModal && <RestartModal close={setOpenRestartModal} handleRestart={handleRestart} />}
 
         </>
     )
