@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import refresh from '../../images/refreshicon.png'
-
+import produce from "immer";
+import { WinningCombinations, IndexToPositionMap } from '../../constants/constants'
+import WinningModal from './WinningModal'
 //orange - #F2B136
 //teal - #55C3BC
 //background - #1A2A33
@@ -59,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 10
     },
     scoreButton: {
-        backgroundColor: oColor,
+        // backgroundColor: oColor,
         // borderBottom: 'solid 4px #10212A',
         textTransform: 'uppercase',
         fontWeight: 'bold',
@@ -81,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function TicTacToeBoard() {
+export default function TicTacToeBoard({ token }) {
     const classes = useStyles()
     const [gridDimensions] = useState({ width: 3, height: 3 })
 
@@ -94,15 +96,104 @@ export default function TicTacToeBoard() {
     }
 
     const [grid, setGrid] = useState(() => createGameBoard())
-    const [player, setPlayer] = useState('x')
-    const playerColor = player === 'x' ? '#31C3BD' : '#F2B136'
+    const [player, setPlayer] = useState(false)
+    const playerColor = player === true ? '#31C3BD' : '#F2B136'
+    const currentPlayer = player ? 'X' : 'O'
+    const [colorMap, setColorMap] = useState()
+    const [xPositions, setXPositions] = useState([])
+    const [oPositions, setOPositions] = useState([])
+    const [winner, setWinner] = useState()
+    const [open, setOpen] = useState()
 
+    const [xScore, setXScore] = useState(0)
+    const [oScore, setOScore] = useState(0)
+    const [tScore, setTScore] = useState(0)
+
+    // const [endGameText, setEndGameText] = useState()
+
+    const handlePlayerMove = (currentRow, currentColumn) => {
+
+        const newGrid = produce(grid, gridCopy => {
+            gridCopy[currentRow][currentColumn] = currentPlayer
+        });
+        setGrid(newGrid)
+
+        currentPlayer === 'X' ?
+            setXPositions(prev => [...prev, IndexToPositionMap[`${currentRow}-${currentColumn}`]])
+            :
+            setOPositions(prev => [...prev, IndexToPositionMap[`${currentRow}-${currentColumn}`]])
+
+        const indexString = `${currentRow}-${currentColumn}`
+        setColorMap(prev => ({ ...prev, [indexString]: playerColor }))
+    }
+
+    useEffect(() => {
+        xPositions.length > 0 && setOpen(true)
+    }, [winner])
+
+    useEffect(() => {
+        if (checkWinner()) {
+            setWinner(currentPlayer)
+            currentPlayer === "X" ?
+                setXScore(prev => prev + 1)
+                :
+                setOScore(prev => prev + 1)
+            // const currentScore = scores[player]
+            // setScores(prev => ({ ...prev, player: currentScore + 1 }))
+            // setEndGameText(`${currentPlayer} Takes the round`)
+        } else {
+            setPlayer(prev => !prev)
+        }
+        if (xPositions.length + oPositions.length === 9) {
+            setWinner('tie')
+            setTScore(prev => prev + 1)
+        }
+    }, [xPositions, oPositions])
+    console.log(xPositions.length + oPositions.length)
+    const checkWinner = () => {
+        let winner = false
+        for (const key in WinningCombinations) {
+            const winningCombo = WinningCombinations[key]
+            let count = 0
+            // debugger
+            winningCombo.forEach((index) => {
+                let currentPositions = currentPlayer === "X" ? xPositions : oPositions
+                if (currentPositions.includes(index)) count++
+                if (count === 3) return winner = true
+            })
+        }
+        return winner
+    }
+
+    const handleNextGameClick = () => {
+        setGrid(createGameBoard())
+        setXPositions([])
+        setOPositions([])
+    }
+
+    const handleRefresh = () => {
+        setGrid(createGameBoard())
+        setXPositions([])
+        setOPositions([])
+        setXScore(0)
+        setTScore(0)
+        setOScore(0)
+    }
+    console.log(colorMap)
+    console.log(xPositions)
+    console.log(oPositions)
+    console.log(winner)
     return (
         <>
             <div className={classes.flexRow}>
                 <p className={classes.headerX}>X<span css={{ color: oColor }}>O</span></p>
-                <button className={classes.turnButton}><span css={{ color: playerColor, fontSize: 20 }}>O </span> turn</button>
-                <button className={classes.refreshButton}><img css={{ height: 20, width: 20 }} src={refresh}></img></button>
+                <div className={classes.turnButton}><span css={{ color: playerColor, fontSize: 20 }}>{currentPlayer} </span> turn</div>
+                <button 
+                    className={classes.refreshButton}
+                    onClick={() => handleRefresh()}
+                >
+                    <img alt='Refresh icon' css={{ height: 20, width: 20 }} src={refresh}/>
+                </button>
             </div>
             <div
                 css={{
@@ -116,15 +207,23 @@ export default function TicTacToeBoard() {
                     return rows.map((col, k) => {
                         return (
                             <div
+                                onClick={() => handlePlayerMove(i, k)}
                                 key={`${i}-${k}`}
                                 className={classes.grid}
                                 style={{
                                     borderRadius: 10,
                                     backgroundColor: '#1F3641',
-                                    borderBottom: 'solid 8px #10212A'
+                                    borderBottom: grid[i][k] === 0 ? 'solid 8px #10212A' : 'solid 4px #10212A',
+                                    transitions: 'border-bottom 3s'
                                 }}
                             >
-                                <span className={classes.boardSpan}>
+                                <span
+                                    css={{
+                                        color: colorMap && colorMap[`${i}-${k}`] ? colorMap[`${i}-${k}`] : null,
+                                        fontSize: '4em'
+                                    }}
+                                    className={classes.boardSpan}
+                                >
                                     {grid[i][k] !== 0 && grid[i][k]}
                                 </span>
                             </div>
@@ -134,19 +233,21 @@ export default function TicTacToeBoard() {
                 )}
             </div>
             <div className={classes.flexRow}>
-                <button className={classes.scoreButton}>
+                <button css={{ backgroundColor: oColor }} className={classes.scoreButton}>
                     <p className={classes.scoreText}>O (You)</p>
-                    <p className={classes.score}>O</p>
+                    <p className={classes.score}>{oScore}</p>
                 </button>
-                <button css={{backgroundColor: '#A8BFC9' }}className={classes.scoreButton}>
+                <button css={{ backgroundColor: '#A8BFC9' }} className={classes.scoreButton}>
                     <p className={classes.scoreText}>Ties</p>
-                    <p className={classes.score}>O</p>
+                    <p className={classes.score}>{tScore}</p>
                 </button>
-                <button css={{backgroundColor: oColor}} className={classes.scoreButton}>
+                <button css={{ backgroundColor: xColor }} className={classes.scoreButton}>
                     <p className={classes.scoreText}>X (CPU)</p>
-                    <p className={classes.score}>O</p>
+                    <p className={classes.score}>{xScore}</p>
                 </button>
             </div>
+            {open && <WinningModal close={setOpen} player={winner} handleNextRound={handleNextGameClick} />}
+
         </>
     )
 }
