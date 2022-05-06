@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        // backgroundColor: 'red',
         width: 400,
         paddingBottom: 10
     },
@@ -59,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
     scoreButton: {
         textTransform: 'uppercase',
         fontWeight: 'bold',
-        // color: '#20364/1',
         height: 70,
         width: 125,
         borderRadius: 20,
@@ -110,6 +108,8 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
     const [computerPlaying, setComputerPlaying] = useState(false)
 
     const handlePlayerMove = (currentRow, currentColumn) => {
+        if (grid[currentRow][currentColumn] !== 0) return
+
         const newGrid = produce(grid, gridCopy => {
             gridCopy[currentRow][currentColumn] = currentPlayer
         });
@@ -194,33 +194,26 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
     }
 
     const handleComputerMove = () => {
-        setComputerPlaying(true)
-        console.log('here in computer move')
         const randomColumn = Math.floor(Math.random() * 3)
         const randomRow = Math.floor(Math.random() * 3)
-        console.log(grid[randomRow][randomColumn])
+       
         if (grid[randomRow][randomColumn] === 0) {
             handlePlayerMove(randomRow, randomColumn)
-            setComputerPlaying(false)
         } else {
             handleComputerMove()
         }
+        setComputerPlaying(false)
     }
-    console.log("computerPlaying", computerPlaying)
 
     useEffect(() => {
-        console.log(player, playerMark)
         if (player !== playerMark || (player !== playerMark && winner === null)) {
+            setComputerPlaying(true)
             setTimeout(() => {
                 handleComputerMove()
             }, 1000)
         }
     }, [player, winner])
-    // console.log(playerMark)
-    // console.log(player)
-    console.log(xPositions, oPositions)
-    console.log(grid)
-    console.log(player, winner)
+   
     return (
         <>
             <div className={classes.flexRow}>
@@ -238,24 +231,23 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
                     display: 'grid',
                     gridTemplateColumns: `repeat(${gridDimensions.width}, 120px)`,
                     gridGap: '15px 20px',
-                    marginBottom: 30
+                    marginBottom: 30,
                 }}
             >
                 {grid.map((rows, i) => {
                     return rows.map((col, k) => {
                         return (
                             <div
-                                onClick={() => {
-                                    if (!computerPlaying) handlePlayerMove(i, k)
-                                }
-                                }
+                                onClick={() => handlePlayerMove(i, k)}
                                 key={`${i}-${k}`}
                                 className={classes.grid}
                                 style={{
                                     borderRadius: 10,
                                     backgroundColor: TicTacToeColors.tile,
                                     borderBottom: grid[i][k] === 0 ? 'solid 8px #10212A' : 'solid 4px #10212A',
-                                    transitions: 'border-bottom 3s'
+                                    transitions: 'border-bottom 3s',
+                                    pointerEvents: computerPlaying && 'none',
+
                                 }}
                             >
                                 <span
