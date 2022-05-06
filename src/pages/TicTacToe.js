@@ -2,9 +2,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 import TicTacToeBoard from '../components/TicTacToe/TicTacToeBoard'
 import { useState, useEffect } from 'react'
+import { TicTacToeColors } from '../constants/constants'
 
-const oColor = '#F2B136'
-const xColor = '#31C3BD'
+const oColor = TicTacToeColors.oColor
+const xColor = TicTacToeColors.xColor
 
 const useStyles = makeStyles((theme) => ({
     flexContainerColumn: {
@@ -22,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: '100%',
         minWidth: 400,
-        backgroundColor: '#1F3641',
+        maxWidth: 500,
+        backgroundColor: TicTacToeColors.tile,
         boxShadow: '0 8px #10212A',
         borderRadius: 10,
         marginBottom: 20
@@ -32,13 +34,12 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // border: `solid 10px ${theme.ticTacToePallete}`,
         width: '90%',
         minWidth: 350,
+        maxWidth: 500,
         borderRadius: 10
     },
     background: {
-        // backgroundColor: '#1A2A33',
         height: '100vh'
     },
     headerX: {
@@ -49,23 +50,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 20
     },
     text: {
-        color: '#A8BFC9',
+        color: TicTacToeColors.tieColor,
         fontWeight: 'bold',
         textTransform: 'uppercase'
     },
     reminderText: {
-        color: '#647985',
+        color: TicTacToeColors.reminderTextColor,
         textTransform: 'uppercase'
     },
-    playerMarkX: {
-        borderRadius: 10,
-        width: '50%',
-        height: 60,
-        textAlign: 'center',
-        position: 'relative',
-        transition: 'background-color .5s ease-out',
-    },
-    playerMarkO: {
+    playerMarkOuter: {
         borderRadius: 10,
         width: '50%',
         height: 60,
@@ -96,32 +89,44 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '15px',
         width: '100%',
         minWidth: 400,
+        maxWidth: 500,
         fontWeight: 'bold'
     },
     orange: {
-        color: '#1a2a33',
-        backgroundColor: '#F2B137',
-        boxShadow: '0 5px #CC8B11',
+        color: TicTacToeColors.textColor,
+        backgroundColor: TicTacToeColors.oColor,
+        boxShadow: `0 8px ${TicTacToeColors.oShadow}`
+    },
+    teal: {
+        color: TicTacToeColors.textColor,
+        backgroundColor: TicTacToeColors.xColor,
+        boxShadow: `0 8px ${TicTacToeColors.xShadow}`
+    },
+    active: {
+        color: TicTacToeColors.tieColor,
+        backgroundColor: TicTacToeColors.textColor
+    },
+    notActive: {
+        color: TicTacToeColors.textColor,
+        backgroundColor: TicTacToeColors.tieColor
     }
 }))
 
 export default function TicTacToe() {
 
     const classes = useStyles()
-    const [color, setColor] = useState('#1A2A33')
     const [openBoard, setOpenBoard] = useState(false)
     const [active, setActive] = useState(true) // X is true, and 0 is false 
-
 
     const handleNewGame = () => {
         setOpenBoard(true)
     }
 
     return (
-        <div css={{ backgroundColor: color }} className={classes.background}>
+        <div css={{ backgroundColor: TicTacToeColors.backgroundColor }} className={classes.background}>
             <div className={classes.flexContainerColumn}>
                 <h1 css={{ color: 'white' }}>TicTacToe</h1>
-                {openBoard ? 
+                {openBoard ?
                     <TicTacToeBoard playerMark={active} setOpenBoard={setOpenBoard}></TicTacToeBoard>
                     :
                     <>
@@ -131,21 +136,13 @@ export default function TicTacToe() {
                             <div className={classes.flexContainerRow}>
                                 <div
                                     onClick={() => setActive(prev => !prev)}
-                                    className={classes.playerMarkX}
-                                    css={{
-                                        color: !active ? '#A8BFC9' : '#1A2A33',
-                                        backgroundColor: active ? '#A8BFC9' : '#1A2A33'
-                                    }}
+                                    className={`${classes.playerMarkOuter} ${!active ? classes.active : classes.notActive}`}
                                 >
                                     <span className={classes.playerMark}>x</span>
                                 </div>
                                 <div
                                     onClick={() => setActive(prev => !prev)}
-                                    className={classes.playerMarkO}
-                                    css={{
-                                        color: active ? '#A8BFC9' : '#1A2A33',
-                                        backgroundColor: !active ? '#A8BFC9' : '#1A2A33'
-                                    }}
+                                    className={`${classes.playerMarkOuter} ${active ? classes.active : classes.notActive}`}
                                 >
                                     <span className={classes.playerMark}>o</span>
                                 </div>
@@ -153,26 +150,12 @@ export default function TicTacToe() {
                             <p className={classes.reminderText}>Remember: X goes first </p>
                         </div>
                         <button
-                            //ADD ANOTHER COLOR CLASS, HOW DO YOU ADD TEO CLASSES TO CLASSNAME????!!!!
                             onClick={() => handleNewGame()}
-                            className={classes.newGameButton}
-                            css={{
-                                color: '#1a2a33',
-                                backgroundColor: '#F2B137',
-                                boxShadow: '0 8px #CC8B11'
-                            }}
+                            className={`${classes.newGameButton} ${classes.orange}`}
                         >
                             New Game (VS CPU)
                         </button>
-                        <button
-                            disabled
-                            className={classes.newGameButton}
-                            css={{
-                                color: '#1a2a33',
-                                backgroundColor: '#31C3BD',
-                                boxShadow: '0 8px #108C86'
-                            }}
-                        >
+                        <button className={`${classes.newGameButton} ${classes.teal}`}>
                             New Game (VS PLAYER)
                         </button>
                     </>

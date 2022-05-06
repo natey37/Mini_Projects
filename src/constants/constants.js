@@ -55,11 +55,25 @@ export const WinningCombinations = {
 export const IndexToPositionMap = {
     '0-0': 1,
     '0-1': 2,
-    '0-2' : 3,
-    '1-0' : 4,
-    '1-1' : 5,
-    '1-2' : 6,
-    '2-0' : 7,
-    '2-1' : 8,
-    '2-2' : 9,
+    '0-2': 3,
+    '1-0': 4,
+    '1-1': 5,
+    '1-2': 6,
+    '2-0': 7,
+    '2-1': 8,
+    '2-2': 9,
+}
+
+export const TicTacToeColors = {
+    oColor: '#F2B136',
+    oShadow: '#CC8B11',
+    xColor: '#31C3BD',
+    xShadow: '#108C86',
+    tieColor: '#A8BFC9',
+    tieShadow: '#6B8997',
+    backgroundColor: '#1A2A33',
+    tile: '#1F3641',
+    tileShadow: '#10212A',
+    textColor: '#1A2A33',
+    reminderTextColor: '#647985'
 }
