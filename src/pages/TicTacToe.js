@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        border: 'solid 10px #1A2A33',
+        // border: `solid 10px ${theme.ticTacToePallete}`,
         width: '90%',
         minWidth: 350,
         borderRadius: 10
     },
     background: {
-        backgroundColor: '#1A2A33',
+        // backgroundColor: '#1A2A33',
         height: '100vh'
     },
     headerX: {

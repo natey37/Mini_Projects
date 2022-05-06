@@ -154,15 +154,18 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
 
     const checkWinner = () => {
         let winner = false
+        let currentPositions = player ? xPositions : oPositions
+        if (currentPositions.length < 3) return winner
+        console.log('currentPositions', currentPositions)
         for (const key in WinningCombinations) {
             const winningCombo = WinningCombinations[key]
             let count = 0
             // debugger
             winningCombo.forEach((index) => {
-                let currentPositions = player ? xPositions : oPositions
                 if (currentPositions.includes(index)) count++
                 if (count === 3) return winner = true
             })
+            // if (count === 3) return winner = true
         }
         return winner
     }
@@ -181,6 +184,8 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
         setGrid(createGameBoard())
         setXPositions([])
         setOPositions([])
+        setWinner(null)
+        setPlayer(true)
     }
 
     const handleRefresh = () => {
@@ -190,6 +195,27 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
     const handleRestart = () => {
         setOpenBoard(prev => !prev)
     }
+
+    const handleComputerMove = () => {
+        console.log('here in computer move')
+        const randomColumn = Math.floor(Math.random() * 3)
+        const randomRow = Math.floor(Math.random() * 3)
+        console.log(grid[randomRow][randomColumn])
+        if (grid[randomRow][randomColumn] === 0) {
+            handlePlayerMove(randomRow, randomColumn)
+        } else {
+            handleComputerMove()
+        }
+    }
+
+    useEffect(() => {
+        console.log(player, playerMark)
+        if (player !== playerMark || (player !== playerMark && winner === null)) {
+            setTimeout(() => {
+                handleComputerMove()
+            }, 1000)
+        }
+    }, [player, winner])
     // console.log(playerMark)
     // console.log(player)
     console.log(xPositions, oPositions)
@@ -258,7 +284,8 @@ export default function TicTacToeBoard({ playerMark, setOpenBoard }) {
                     <p className={classes.score}>{!playerMark ? xScore : oScore}</p>
                 </button>
             </div>
-            {openWinningModal && <WinningModal close={setOpenWinningModal} player={winner} playerMark ={playerMark} handleNextRound={handleNextGameClick} />}
+            <h4 css={{color: '#A8BFC9'}}>{player !== playerMark && 'Computer thinking...'}</h4>
+            {openWinningModal && <WinningModal close={setOpenWinningModal} player={winner} playerMark={playerMark} handleNextRound={handleNextGameClick} />}
             {openRestartModal && <RestartModal close={setOpenRestartModal} handleRestart={handleRestart} />}
 
         </>
