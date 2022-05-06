@@ -36,7 +36,11 @@ const menuOptions = [
     {
         path: '/wordle',
         pathString: 'Wordle'
-    }
+    },
+    {
+        path: '/tic_tac_toe',
+        pathString: 'TicTacToe'
+    },
 ]
 
 export default function ContentMenu() {
@@ -50,7 +54,7 @@ export default function ContentMenu() {
         setAnchorEl(null);
     };
 
-    const MenuLink = ({path, pathString}) => {
+    const MenuLink = ({ path, pathString }) => {
         return (
             <>
                 <Link className={classes.menuLink} to={path}>
@@ -60,15 +64,6 @@ export default function ContentMenu() {
         )
     }
 
-    const displayMenuLinks = menuOptions.map((option) => {
-        return ( 
-            <MenuLink
-                key={option.path}
-                path={option.path}
-                pathString={option.pathString}
-            />
-        )
-    })
     return (
         <div>
             <Button
@@ -93,9 +88,8 @@ export default function ContentMenu() {
             >
                 {menuOptions.map((option) => {
                     return (
-                        <div>
+                        <div key={option.pathString}>
                             <MenuLink
-                                key={option.path}
                                 path={option.path}
                                 pathString={option.pathString}
                             />

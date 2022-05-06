@@ -59,9 +59,9 @@ export default function Wordle() {
             setOpen(true)
         }
     }, [open])
-    
+
     return (
-        <div css={{backgroundColor: color}} className={classes.background}>
+        <div css={{ backgroundColor: color }} className={classes.background}>
             <div className={classes.flexContainerColumn}>
                 <h1 css={{ color: 'white' }}>Wordle</h1>
                 <div className={classes.flexContainerRow}>

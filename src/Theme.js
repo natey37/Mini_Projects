@@ -18,6 +18,6 @@ export const theme = createTheme({
         },
         success: {
             main: '#303633'
-        }
+        }, 
     },
 });

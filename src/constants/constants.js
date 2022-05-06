@@ -1,3 +1,4 @@
+//Game of Life 
 export const selectOptionsArray = Array.from(new Array(5).fill().map((x, index) => ((index + 1) * 10) * ((index + 1) * 10)))
 
 export const areaMap = {
@@ -25,6 +26,7 @@ export const areaMap = {
 
 export const operations = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
+//Wordle
 export const TopRowKeys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
 export const MidRowKeys = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
 export const BotRowKeys = ['z', 'x', 'c', 'v', 'b', 'n', 'm']
@@ -38,3 +40,41 @@ export const isFlippedBoard = {
     5: [false, false, false, false, false],
 }
 
+//Tic Tac Toe 
+export const WinningCombinations = {
+    1: [1, 2, 3],
+    2: [4, 5, 6],
+    3: [7, 8, 9],
+    4: [1, 4, 7],
+    5: [2, 5, 8],
+    6: [3, 6, 9],
+    7: [1, 5, 9],
+    8: [3, 5, 7]
+}
+
+export const IndexToPositionMap = {
+    '0-0': 1,
+    '0-1': 2,
+    '0-2': 3,
+    '1-0': 4,
+    '1-1': 5,
+    '1-2': 6,
+    '2-0': 7,
+    '2-1': 8,
+    '2-2': 9,
+}
+
+export const TicTacToeColors = {
+    oColor: '#F2B136',
+    oShadow: '#CC8B11',
+    xColor: '#31C3BD',
+    xShadow: '#108C86',
+    tieColor: '#A8BFC9',
+    tieShadow: '#6B8997',
+    backgroundColor: '#1A2A33',
+    tile: '#1F3641',
+    tileShadow: '#10212A',
+    textColor: '#1A2A33',
+    reminderTextColor: '#647985',
+    modal: "#1F3641"
+}
