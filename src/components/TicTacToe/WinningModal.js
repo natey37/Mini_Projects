@@ -2,6 +2,7 @@
 // import { jsx } from '@emotion/react'
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { TicTacToeColors } from '../../constants/constants'
 
 const useStyles = makeStyles((theme) => ({
     quitButton: {
@@ -14,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         textDecoration: 'none',
         outline: 'none',
-        color: '#1A2A33',
+        color: TicTacToeColors.textColor,
         fontWeight: 'bold',
-        backgroundColor: '#A8BFC9',
+        backgroundColor: TicTacToeColors.tieColor,
         border: 'none',
         borderRadius: '15px',
-        boxShadow: `0 5px #6B8997`,
+        boxShadow: `0 5px ${TicTacToeColors.tieShadow}`,
         '&:hover': {
-            backgroundColor: '#6B8997'
+            backgroundColor: TicTacToeColors.tieShadow
         },
         '&:active': {
-            backgroundColor: '#6B8997',
+            backgroundColor: TicTacToeColors.tieShadow,
             boxShadow: '0 5px #666',
             transform: 'translateY(4px)'
         },
@@ -39,17 +40,17 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         textDecoration: 'none',
         outline: 'none',
-        color: '#1A2A33',
+        color: TicTacToeColors.textColor,
         fontWeight: 'bold',
-        backgroundColor: '#F2B136',
+        backgroundColor: TicTacToeColors.oColor,
         border: 'none',
         borderRadius: '10px',
-        boxShadow: `0 5px #CC8B13`,
+        boxShadow: `0 5px ${TicTacToeColors.oShadow}`,
         '&:hover': {
-            backgroundColor: '#CC8B13'
+            backgroundColor: TicTacToeColors.oShadow
         },
         '&:active': {
-            backgroundColor: '#CC8B13',
+            backgroundColor: TicTacToeColors.oShadow,
             boxShadow: '0 5px #666',
             transform: 'translateY(4px)'
         },
@@ -67,16 +68,13 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer"
     },
     modal: {
-        // border: "solid 3px red",
         height: "20%",
         minHeight: 275,
         width: '100%',
-        // borderRadius: 20,
-        backgroundColor: "#1F3641",
+        backgroundColor: TicTacToeColors.modal,
         position: "absolute",
         top: "50%",
         left: "50%",
-        color: "#D924FF",
         transform: "translate(-50%,-50%)",
         msTransform: "translate(-50%,-50%)",
     },
@@ -95,19 +93,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-
-        // backgroundColor: 'red',
-        // width: 400,
         paddingBottom: 10
     },
     youWonText: {
-        color: '#A8BFC9',
+        color: TicTacToeColors.tieColor,
         textTransform: 'uppercase',
         fontWeight: 'bold'
     },
     playerText: {
-        // padding: 40,
-        // color: '#F2B136',
         fontSize: 70,
         textAlign: "center",
         fontWeight: "bold",
@@ -118,14 +111,12 @@ const useStyles = makeStyles((theme) => ({
 export default function WinningModal({ close, player, playerMark, handleNextRound }) {
     const classes = useStyles()
     const playerColors = {
-        'X': '#31C3BD',
-        'tie': '#A8BFC9',
-        'O': '#F2B136'
+        'X': TicTacToeColors.xColor,
+        'tie': TicTacToeColors.tieColor,
+        'O': TicTacToeColors.oColor
     }
     const winner = playerMark ? 'X' : 'O'
-    console.log(player)
-    // const playerColor = player === 'X' ? '#31C3BD' : '#F2B136'
-    // const playerBorderShadow = player === 'X' ? : '#CC8B13'
+  
     return (
         <div className={classes.overlay}>
             <div className={classes.modal}>
@@ -136,39 +127,43 @@ export default function WinningModal({ close, player, playerMark, handleNextRoun
                         <div className={classes.youWonText}>you tied!</div>
                      }
                     <div className={classes.flexRow}>
-                                <p css={{ color: playerColors[player] }} className={classes.playerText}>
-                                    {player === 'X' || player === 'O' ? player : 'Cats Game'}
-                                </p>
-                                {(player === 'X' || player === 'O') &&
-                                    <>
-                                        <p
-                                            css={{
-                                                fontSize: 38,
-                                                textTransform: 'uppercase',
-                                                color: playerColors[player]
-                                            }}
-                                            className={classes.playerText}
-                                        >
-                                            &nbsp;&nbsp;&nbsp;takes the round
-                                </p>
-                                    </>
-                                }
-                            </div>
-
-                            <div className={classes.flexRow}>
-                                <button className={classes.quitButton} onClick={() => close(false)}>Quit</button>
-                                <button
-                                    className={classes.nextButton}
-                                    onClick={() => {
-                                        close(false)
-                                        handleNextRound()
+                        <p css={{ color: playerColors[player] }} className={classes.playerText}>
+                            {player === 'X' || player === 'O' ? player : 'Cats Game'}
+                        </p>
+                        {(player === 'X' || player === 'O') &&
+                            <>
+                                <p
+                                    css={{
+                                        fontSize: 38,
+                                        textTransform: 'uppercase',
+                                        color: playerColors[player]
                                     }}
+                                    className={classes.playerText}
                                 >
-                                    Next Round
-                        </button>
-                            </div>
+                                    &nbsp;&nbsp;&nbsp;takes the round
+                                </p>
+                            </>
+                        }
+                    </div>
+                        <div className={classes.flexRow}>
+                            <button 
+                                className={classes.quitButton} 
+                                onClick={() => close(false)}
+                            >
+                                Quit
+                            </button>
+                            <button
+                                className={classes.nextButton}
+                                onClick={() => {
+                                    close(false)
+                                    handleNextRound()
+                                }}
+                            >
+                                Next Round
+                            </button>
                         </div>
-        </div>
+                    </div>
+                </div>
             </div >
             );
         }

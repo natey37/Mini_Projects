@@ -2,8 +2,9 @@
 // import { jsx } from '@emotion/react'
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { TicTacToeColors } from '../../constants/constants'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     quitButton: {
         textTransform: 'uppercase',
         marginRight: 10,
@@ -14,24 +15,23 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         textDecoration: 'none',
         outline: 'none',
-        color: '#1A2A33',
+        color: TicTacToeColors.textColor,
         fontWeight: 'bold',
-        backgroundColor: '#A8BFC9',
+        backgroundColor: TicTacToeColors.tieColor,
         border: 'none',
         borderRadius: '10px',
-        boxShadow: `0 5px #6B8997`,
+        boxShadow: `0 5px ${TicTacToeColors.tieShadow}`,
         '&:hover': {
-            backgroundColor: '#6B8997'
+            backgroundColor: TicTacToeColors.tieShadow
         },
         '&:active': {
-            backgroundColor: '#6B8997',
+            backgroundColor: TicTacToeColors.tieShadow,
             boxShadow: '0 5px #666',
             transform: 'translateY(4px)'
         },
     },
     nextButton: {
         textTransform: 'uppercase',
-        // marginRight: 10,
         display: 'inline-block',
         padding: '15px 20px',
         fontSize: '16px',
@@ -39,17 +39,17 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         textDecoration: 'none',
         outline: 'none',
-        color: '#1A2A33',
+        color: TicTacToeColors.textColor,
         fontWeight: 'bold',
-        backgroundColor: '#F2B136',
+        backgroundColor: TicTacToeColors.oColor,
         border: 'none',
         borderRadius: '10px',
-        boxShadow: `0 5px #CC8B13`,
+        boxShadow: `0 5px ${TicTacToeColors.oShadow}`,
         '&:hover': {
-            backgroundColor: '#CC8B13'
+            backgroundColor: TicTacToeColors.oShadow
         },
         '&:active': {
-            backgroundColor: '#CC8B13',
+            backgroundColor: TicTacToeColors.oShadow,
             boxShadow: '0 5px #666',
             transform: 'translateY(4px)'
         },
@@ -67,16 +67,13 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer"
     },
     modal: {
-        // border: "solid 3px red",
         height: "20%",
         minHeight: 275,
         width: '100%',
-        // borderRadius: 20,
         backgroundColor: "#1F3641",
         position: "absolute",
         top: "50%",
         left: "50%",
-        color: "#D924FF",
         transform: "translate(-50%,-50%)",
         msTransform: "translate(-50%,-50%)",
     },
@@ -95,21 +92,16 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-
-        // backgroundColor: 'red',
-        // width: 400,
         paddingBottom: 10,
     },
     playerText: {
-        // padding: 40,
-        // color: '#F2B136',
         textTransform: 'uppercase',
         fontWeight: 'bold',
         fontSize: 45,
         textAlign: "center",
         fontWeight: "bold",
         margin: 0,
-        color: '#A8BFC9',
+        color: TicTacToeColors.tieColor,
         marginBottom: 20
 
     }
@@ -117,14 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RestartModal({ close, handleRestart }) {
     const classes = useStyles()
-    // const playerColors = {
-    //     'X': '#31C3BD',
-    //     'tie': '#A8BFC9',
-    //     'O': '#F2B136'
-    // }
-    // console.log(player)
-    // const playerColor = player === 'X' ? '#31C3BD' : '#F2B136'
-    // const playerBorderShadow = player === 'X' ? : '#CC8B13'
+ 
     return (
         <div className={classes.overlay}>
             <div className={classes.modal}>
@@ -133,14 +118,10 @@ export default function RestartModal({ close, handleRestart }) {
                         Restart Game
                     </p>
                     <div className={classes.flexRow}>
-                        <button className={classes.quitButton} onClick={() => close(false)}>No, Cancel</button>
-                        <button
-                            className={classes.nextButton}
-                            onClick={() => {
-                                handleRestart()
-                                // handleNextRound()
-                            }}
-                        >
+                        <button className={classes.quitButton} onClick={() => close(false)}>
+                            No, Cancel
+                        </button>
+                        <button className={classes.nextButton} onClick={() => handleRestart()}>
                             Yes, Restart
                         </button>
                     </div>

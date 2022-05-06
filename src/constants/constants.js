@@ -75,5 +75,6 @@ export const TicTacToeColors = {
     tile: '#1F3641',
     tileShadow: '#10212A',
     textColor: '#1A2A33',
-    reminderTextColor: '#647985'
+    reminderTextColor: '#647985',
+    modal: "#1F3641"
 }
