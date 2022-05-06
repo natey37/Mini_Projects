@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import GameOfLife from '../images/gameOfLife.png'
 import GameOfLife3 from '../images/gameOfLife3.png'
-
+import TicTacToe from '../images/tictactoe.png'
 import Wordle from '../images/wordle.png'
 
 import { Link } from 'react-router-dom'
@@ -60,6 +60,7 @@ export default function Home() {
                 <h1>Welcome to Mini Games</h1>
                 <Card title={'Game of Life'} img={GameOfLife3} link={'/game_of_life'}></Card>
                 <Card title={'Wordle'} img={Wordle} link={'/wordle'}></Card>
+                <Card title={'TicTacToe'} img={TicTacToe} link={'/tic_tac_toe'}></Card>
             </div>
         </div>
     )
